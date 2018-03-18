@@ -1,0 +1,35 @@
+<header>
+	<nav class="navbar navbar-expand-md navbar-light bg-faded">
+		<a class="navbar-brand" href="{plink Homepage:}">Bitter</a>
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+			data-target="#gallery-navbar" aria-controls="gallery-navbar" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>		
+		</button>
+		<div class="collapse navbar-collapse" id="gallery-navbar">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-10 col-md-9">
+						<form class="form-inline">
+							<input class="form-control w-75" type="text" placeholder="Search">
+							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+						</form>
+					</div>
+					<div class="col-lg-2 col-md-3">
+						<ul class="navbar-nav float-lg-right">
+							<li class="nav-item"><a class="nav-link" href="{plink Homepage:}">Home</a></li>
+							{var $user = $this->getParameter('user')}
+							{if $user->isLoggedIn()}
+								<li class="nav-item"><a class="nav-link" href="{plink User:profile $user->getIdentity()->username}">{$user->getIdentity()->firstname}</a></li>
+								<li class="nav-item"><a class="nav-link" href="{plink Sign:out}">Sign out</a></li>	
+							{else}
+								<li class="nav-item"><a class="nav-link" href="{plink Sign:in}">Sign in</a></li>
+								<li class="nav-item"><a class="nav-link" href="{plink Sign:up}">Sign up</a></li>
+							{/if}
+						</ul>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</nav>
+</header>

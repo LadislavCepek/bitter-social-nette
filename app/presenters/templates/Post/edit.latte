@@ -1,0 +1,35 @@
+{block head}
+
+<link href="{$basePath}/js/trumbowyg/ui/trumbowyg.min.css" rel="stylesheet">
+
+{/block}
+
+{block title}Post Edit{/block}
+
+{block content}
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-12">
+      <div id="editor">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      {control postForm}
+    </div>
+  </div>
+
+</div>
+
+{/block}
+
+{block scripts}
+
+<script src="{$basePath}/js/trumbowyg/trumbowyg.min.js"></script>
+<script src="{$basePath}/js/editor.js"></script>
+
+{/block}

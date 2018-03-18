@@ -1,0 +1,57 @@
+{var $post = $this->getParameter('post')}
+{var $html = $this->getParameter('html')}
+{var $isOwner = $this->getParameter('isOwner')}
+
+{block head}<link href="{$basePath}/css/posts.css" rel="stylesheet">{/block}
+
+{block content}
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<div class="post-wrapper p-2">
+				<div class="row mb-2">
+
+					<div class="col-11">
+						<span><strong><a class="post-link" href="{plink User:profile $post->user->username}">{$post->user->firstname} {$post->user->lastname} <span class="text-muted">@{$post->user->username}</span></a></strong></span>
+						<span class="mb-2 text-muted">{$post->created|date:'%e %b %Y'}</span>
+					</div>
+
+					{if $isOwner}
+					<div class="col-1">
+						<a class="post-link" href="{plink Post:edit $post->id}">Edit</a>
+					</div>
+					{/if}
+				</div>
+
+				<div class="row">
+					<div class="col-12">
+						<a n:href="like!" class="ajax">
+							<span class="fa {if $post->meta->liked} fa-heart {else} fa-heart-o {/if} fa-lg mx-2"></span>
+						</a>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-12">
+						{$html}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-12">
+						<a n:href="like!" class="ajax">
+							<span class="fa {if $post->meta->liked} fa-heart {else} fa-heart-o {/if} fa-lg mx-2"></span>
+						</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	{if $this->getParameter('user')->isLoggedIn()}
+	{control commentForm}
+	{/if}
+</div>
+
+{/block}

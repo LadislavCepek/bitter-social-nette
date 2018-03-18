@@ -1,0 +1,85 @@
+{var $profile = $this->getParameter('profile')}
+{var $isOwner = $this->getParameter('isOwner')}
+
+{block head}
+
+<link href="{$basePath}/css/profile.css" rel="stylesheet">
+<link href="{$basePath}/css/posts.css" rel="stylesheet">
+
+{/block}
+
+{block title}{$profile->username}'s profile{/block}
+
+{block content}
+
+<div class="profile-wrapper">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="card card-inverse profile-card">
+					<div class="card-block">
+						<div class="row m-3">
+
+							<div class="col-md-4 col-sm-4 text-center">
+								<img class="btn-md" src="{$basePath}\images\profiles\{$profile->picture}" style="border-radius:50%; width:220px"/>
+							</div>
+
+							<div class="col-md-8 col-sm-8">
+
+								<h2 class="card-title profile-name">{$profile->firstname} {$profile->lastname}</h2>
+
+								<p class="card-text"><strong>@{$profile->username}</strong></p>
+
+								<p class="card-text"><strong>{$profile->email}</strong></p>
+
+								{if !$isOwner}
+								<a n:href="follow!" class="ajax">Follow</a></br>
+								{/if}
+
+								{if $isOwner}
+								<a n:href="Post:edit">Write post</a>
+								{/if}
+
+							</div>
+						</div>
+
+						<div class="row">
+
+							<div class="col-md-4 col-sm-4 text-center">
+								<h2><strong>{$profile->meta->posts}</strong></h2>
+								<span><small>Posts</small></span>
+							</div>
+
+							<div class="col-md-4 col-sm-4 text-center">
+								<h2><strong>1.4k</strong></h2>
+								<span><small>Followers</small></span>
+							</div>
+
+							<div class="col-md-4 col-sm-4 text-center">
+								<h2><strong>321</strong></h2>
+								<span><small>Following</small></span>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+
+			<div class="col-1"></div>
+
+			<div class="col-10">
+				{foreach $posts as $post}
+					{control post-$post->id}
+				{/foreach}
+			</div>
+
+		</div>
+	</div>
+</div>
+
+{/block}

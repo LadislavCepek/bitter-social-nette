@@ -1,0 +1,38 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
+parameters:
+
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+
+session:
+	expiration: 14 days
+
+
+database:
+	dsn: 'mysql:host=127.0.0.1;dbname=bitter'
+	user: 'root'
+	password:
+	options:
+		lazy: yes
+
+
+services:
+	- App\Model\UserManager
+	- App\Model\CommentManager
+	- App\Model\PostManager
+	- App\Model\MetaManager
+	- App\Forms\FormFactory
+	- App\Forms\SignInFormFactory
+	- App\Forms\SignUpFormFactory
+	- App\Forms\CommentFormFactory
+	- App\Forms\PostFormFactory
+	- App\Components\HeaderFactory
+	- App\Components\PostFactory
+	router: App\RouterFactory::createRouter

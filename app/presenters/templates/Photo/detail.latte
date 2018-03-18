@@ -1,0 +1,90 @@
+{block content}
+{var $user = $this->getParameter('user')}
+{var $comments = $this->getParameter('comments')}
+<div id="photo-detail-card" class="card" style="margin: auto">
+	{snippet like-button}
+	<a n:href="Like!">
+		<span class="fa {if $this->getParameter('liked')} fa-heart
+			{else} fa-heart-o {/if} fa-lg mx-2"></span>
+	</a>
+	{/snippet}
+		<img id="photo-detail-image" class="card-img-top"
+		style="width: 65vmin; max-height: 80vmin;"
+		src="{$this->getParameter('photo')->urls->full}"/>
+	<div class="card-block"> 
+		<h5 class="card-title mx-3">{$this->getParameter('photo')->user->names->full}</h5>
+		<a class="card-subtitle text-muted mx-3"
+				href="">@{$this->getParameter('photo')->user->names->username}</a>
+		<a class="text-muted mx-3 float-right"
+				href="{$this->getParameter('photo')->links->html}">Source</a>
+		<a class="text-muted" data-toggle="modal" data-target="#photo-info-modal">Info</a>
+	</div>
+</div>
+
+{if $user->isLoggedIn()}
+	{control commentForm} 
+{/if}
+
+Comments
+{foreach $comments as $comment}
+<div class="card">
+	<div class="card-body">
+		<span class="card-title"><a href="#">{$comment->user->firstname} {$comment->user->lastname}</a></span>
+		<span class="card-subtitle mb-2 text-muted">{$comment->created}</span>
+		<p class="card-text">{$comment->text}</p>
+	</div>
+</div>
+{/foreach}
+
+<div id="photo-info-modal" class="modal" tabindex="-1" role="dialog"
+	aria-labelledby="photo-info-modal-label" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="photo-info-modal-label">Statistics</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-12">
+							<span class="float-left">
+								<span class="fa fa-heart fa-lg mx-2"></span>{$this->getParameter('photo')->meta->likes}
+							</span>
+							<span class="float-right">
+								<span class="fa fa-download fa-lg mx-2"></span>{$this->getParameter('photo')->meta->downloads}
+							</span>
+						</div>
+						<div class="col-lg-12">
+							<span class="float-right">
+								<span class="fa fa-eye fa-lg mx-2"></span>{$this->getParameter('photo')->meta->views}
+							</span>
+						</div>
+						<!--<div class="col-lg-12">
+							<span class="float-right mb-2">
+								{$this->getParameter('photo')->meta->width}x{$this->getParameter('photo')->meta->height}px
+							</span>
+						</div>-->
+					</div>
+				</div>	
+			</div>
+		</div>
+	</div>
+</div>
+{include default-scripts}
+<script>
+$(document).ready () 
+{
+	$.nette.init();
+
+
+};
+</script>
+
+{/block}
+
+{block scripts}
+<script src="{$basePath}/js/photo-detail.js"></script>
+{/block}

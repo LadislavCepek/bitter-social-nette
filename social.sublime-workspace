@@ -1,0 +1,579 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"COLUMN_HAS",
+				"COLUMN_HAS_PICTURE"
+			],
+			[
+				"editor",
+				"editor-body"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"phot",
+				"photoManager"
+			],
+			[
+				"photo",
+				"photoId"
+			],
+			[
+				"comment",
+				"commentManager"
+			],
+			[
+				"commnet",
+				"commentManager"
+			],
+			[
+				"get",
+				"getPhotos"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"User",
+				"UsersController"
+			],
+			[
+				"user",
+				"UserSchema"
+			],
+			[
+				"res",
+				"resource"
+			],
+			[
+				"t",
+				"td\tTag"
+			],
+			[
+				"lo",
+				"log"
+			],
+			[
+				"f",
+				"foo"
+			],
+			[
+				"his",
+				"history"
+			],
+			[
+				"l",
+				"log"
+			],
+			[
+				"hand",
+				"handleUrl"
+			],
+			[
+				"ign",
+				"ignoreHashChange"
+			],
+			[
+				"han",
+				"handleUrl"
+			],
+			[
+				"str",
+				"stringify"
+			],
+			[
+				"data",
+				"data-href"
+			],
+			[
+				"load",
+				"loadView"
+			],
+			[
+				"ac",
+				"activeRows"
+			],
+			[
+				"array",
+				"array_column"
+			],
+			[
+				"close",
+				"closeWarning"
+			],
+			[
+				"shad",
+				"box-shadow"
+			],
+			[
+				"background-c",
+				"background-color"
+			],
+			[
+				"font-s",
+				"font-size"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"rela",
+				"relationshipUser"
+			],
+			[
+				"con",
+				"confirmFriendship"
+			],
+			[
+				"inser",
+				"insertFriendData"
+			],
+			[
+				"COL",
+				"COLUMN_CONFIRMED"
+			],
+			[
+				"TAB",
+				"TABLE_RELATION"
+			],
+			[
+				"TA",
+				"TABLE_RELATION"
+			],
+			[
+				"COl",
+				"COLUMN_USERID"
+			],
+			[
+				"che",
+				"checkFriendRequest"
+			],
+			[
+				"CO",
+				"COLUMN_REQUESTID"
+			],
+			[
+				"TABLE",
+				"TABLE_RELATION"
+			],
+			[
+				"relation",
+				"relationship"
+			],
+			[
+				"RELA",
+				"RELATION_REQUEST_OUTGOING"
+			],
+			[
+				"RE",
+				"RELATION_USER"
+			],
+			[
+				"frien",
+				"friendId"
+			],
+			[
+				"fri",
+				"friendRow"
+			],
+			[
+				"imsa",
+				"imageExtension"
+			],
+			[
+				"ima",
+				"imageInfo"
+			],
+			[
+				"path",
+				"pathinfo"
+			],
+			[
+				"COLU",
+				"COLUMN_TYPE"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"wi",
+				"width"
+			],
+			[
+				"marg",
+				"margin"
+			],
+			[
+				"margin",
+				"margin-left"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"re",
+				"relationship"
+			],
+			[
+				"rea",
+				"relations"
+			],
+			[
+				"fr",
+				"friend"
+			],
+			[
+				"pri",
+				"print"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"fet",
+				"fetchAll"
+			],
+			[
+				"temp",
+				"template"
+			],
+			[
+				"Col",
+				"COLUMN_TEXT"
+			],
+			[
+				"C",
+				"COLUMN_USER_ID"
+			],
+			[
+				"form",
+				"formSucceeded"
+			],
+			[
+				"sca",
+				"scanned"
+			],
+			[
+				"dir",
+				"directory"
+			],
+			[
+				"for",
+				"foreach\tforeach …"
+			],
+			[
+				"print",
+				"print_r"
+			]
+		]
+	},
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 432.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/model/BaseManager.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/templates/Post/edit.latte",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/templates/@layout.latte",
+		"/C/Dropbox/Coding/Web/Application/social-nette/www/css/style.css",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/components/templates/header.latte",
+		"/C/Dropbox/Coding/Web/Application/social-nette/www/css/posts.css",
+		"/C/Dropbox/Coding/Web/Application/social-nette/www/css/profile.css",
+		"/C/Dropbox/Coding/Web/Application/social-nette/www/css/sign-form.css",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/templates/Sign/up.latte",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/templates/Sign/in.latte",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/model/UserManager.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/BasePresenter.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/forms/SignInFormFactory.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/templates/Sign/out.latte",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/SignPresenter.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/forms/PostFormFactory.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/model/PostManager.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/PostPresenter.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/templates/Post/detail.latte",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/UserPresenter.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/components/PostControl.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/components/templates/post.latte",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/forms/EditorFormControl.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/components/PostFactory.php",
+		"/C/Dropbox/Coding/Web/Application/social-nette/www/js/main.js",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/components/HeaderFactory.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/templates/@layout.latte",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/.htaccess",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/web.config",
+		"/C/Dropbox/Coding/Web/Application/social-nette/app/bootstrap.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/config/config.neon",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/config/config.local.neon",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/forms/PostFormFactory.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/templates/Photo/detail.latte",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/components/templates/header.latte",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/www/js/main.js",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/model/CommentManager.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/model/PostManager.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/templates/User/profile.latte",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/UserPresenter.php",
+		"/C/Dropbox/Coding/Web/Application/text-nette/www/js/main.js",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/PhotoPresenter.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/www/css/style.css",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/www/css/photo-detail.css",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/templates/components/form.latte",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/forms/CommentFormFactory.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/HomepagePresenter.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/forms/SignUpFormFactory.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/router/RouterFactory.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/model/UserManager.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/SignPresenter.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/components/HeaderFactory.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/templates/Sign/out.latte",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/templates/Homepage/default.latte",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/BasePresenter.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/components/Header.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/CustomPresenter.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/forms/FormFactory.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/templates/components/header.latte",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/forms/SignInFormFactory.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/forms/HeaderFactory.php",
+		"/C/Dropbox/Coding/Web/Application/piskac-nette/app/presenters/templates/Sign/in.latte",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/model/CommentManager.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/forms/CommentFormFactory.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/model/UserManager.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/model/PhotoManager.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/config/config.neon",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/config/config.neon.orig",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/config/.config_REMOTE_21736.neon.swp",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/presenters/HomepagePresenter.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/config/config.local.neon",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/presenters/templates/Photo/detail.latte",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/presenters/PhotoPresenter.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/forms/SignUpFormFactory.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/presenters/templates/Homepage/default.latte",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/forms/PhotoManager.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/presenters/templates/@layout.latte",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/presenters/BasePresenter.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/presenters/templates/components/form.latte",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/presenters/templates/components/header.latte",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/model/UnsplashManager.php",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/.htaccess",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/app/presenters/templates/Sign/up.latte",
+		"/C/Dropbox/Coding/Web/Application/gallery-nette/www/js/photo-detail.js",
+		"/C/Dropbox/Coding/Games/Unity Assets/Grid Pathfinding/assets/Grid Pathfinding/Scripts/Pathfinder.cs",
+		"/C/Dropbox/Coding/Games/Unity Assets/Grid Pathfinding/assets/Grid Pathfinding/Scripts/GridCell.cs",
+		"/C/Dropbox/Coding/Games/Unity Assets/Kingdoms/Assets/Game Assets/Resources/Models/Walls/wall-corner.mtl",
+		"/C/Dropbox/Coding/Games/Unity Assets/Kingdoms/Assets/Game Assets/Resources/Models/Stairs/stairs.mtl",
+		"/C/Dropbox/Coding/Games/Unity Assets/Kingdoms/Assets/Game Assets/Resources/Models/Stairs/stairs-small.mtl",
+		"/C/Dropbox/Coding/Games/Unity Assets/Kingdoms/Assets/Game Assets/Resources/Models/Walls/wall-top.mtl",
+		"/C/Users/Ladislav Čepek/Desktop/Settlements/assets/GameGrid/Demo/GameGridDemo.cs",
+		"/C/Dropbox/Coding/Web/express-test/services/unsplash.service.js",
+		"/C/Dropbox/Coding/Web/express-test/app.js",
+		"/C/Dropbox/Coding/Web/express-test/controllers/unsplash.controller.js",
+		"/C/Dropbox/Coding/Web/php/dynamic_search/php/classes.php",
+		"/C/Dropbox/Coding/Web/php/dynamic_search/php/dynamic_search.php",
+		"/C/Dropbox/Coding/Web/express-test/models/user.model.js",
+		"/C/Dropbox/Coding/Web/express-test/controllers/user.controller.js",
+		"/C/Dropbox/Coding/Web/express-test/routes/unsplash.route.js",
+		"/C/Dropbox/Coding/Web/express-test/routes/api.route.js",
+		"/C/Dropbox/Coding/Web/express-test/routes/users.route.js",
+		"/C/Dropbox/Coding/Web/express-test/routes/users/users.route.js",
+		"/C/Dropbox/Coding/Web/express-test/services/user.service.js",
+		"/C/Dropbox/Coding/Web/express-test/controllers/users.controller.js",
+		"/C/Users/Ladislav Čepek/Desktop/Game Prototyping/matrix.js",
+		"/C/Users/Ladislav Čepek/Desktop/Game Prototyping/matrix.html",
+		"/C/Dropbox/Coding/Web/javascript/Spinner/script.js",
+		"/C/Dropbox/Coding/Web/scanner/scanner.php",
+		"/C/GitHub/cinema-nette-app/app/model/CommentManager.php",
+		"/C/Users/Ladislav Čepek/AppData/Local/Temp/Temp1_SteeringBehaviorsSeekSourceFiles.zip/SteeringBehaviorsSeekSourceFiles/v2/src/Game.as",
+		"/C/Users/Ladislav Čepek/AppData/Local/Temp/Temp1_SteeringBehaviorsSeekSourceFiles.zip/SteeringBehaviorsSeekSourceFiles/v2/src/Boid.as",
+		"/C/Users/Ladislav Čepek/AppData/Local/Temp/Temp1_SteeringBehaviorsSeekSourceFiles.zip/SteeringBehaviorsSeekSourceFiles/v1/src/Game.as",
+		"/C/Users/Ladislav Čepek/AppData/Local/Temp/Temp1_SteeringBehaviorsSeekSourceFiles.zip/SteeringBehaviorsSeekSourceFiles/v1/src/Main.as",
+		"/C/Users/Ladislav Čepek/AppData/Local/Temp/Temp1_SteeringBehaviorsSeekSourceFiles.zip/SteeringBehaviorsSeekSourceFiles/v1/src/Boid.as",
+		"/C/Dropbox/Coding/Web/javascript/DNA/index.html",
+		"/C/Dropbox/Coding/Web/javascript/DNA/script.js",
+		"/C/Users/Ladislav Čepek/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/Ladislav Čepek/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Vagrant/embedded/gems/gems/vagrant-1.8.6/lib/vagrant.rb",
+		"/C/Vagrant/embedded/gems/gems/vagrant-1.8.6/bin/vagrant",
+		"/C/Dropbox/Coding/Web/php/Crud_MVC/MVC/Data/Database.php",
+		"/C/Dropbox/Coding/Web/php/Crud_MVC/MVC/Data/Table.php",
+		"/C/Dropbox/Coding/Web/php/Crud_MVC/MVC/Router.php",
+		"/C/Dropbox/Coding/Web/php/Crud_MVC/www/index.php",
+		"/C/Dropbox/Coding/Web/php/Crud_MVC/MVC/Etc/Autoloader.php",
+		"/C/Dropbox/Coding/Web/php/Crud_MVC/www/js/script.js",
+		"/C/Dropbox/Coding/Web/php/Crud_MVC/www/html/table.php",
+		"/C/Dropbox/Coding/Web/api/Swai/www/js/swai.js"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"user",
+			"userData",
+			"foo",
+			"$this->factory",
+			"$factory",
+			"if",
+			"jquery",
+			"-\"",
+			" \"",
+			"');\n",
+			"PDO",
+			"{\n",
+			"Database",
+			"}",
+			"user"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 100.0
+	},
+	"pinned_build_system": "",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 223.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -1,0 +1,27 @@
+.post-wrapper
+{
+	background-color: white;
+	border-bottom: 1px solid #DDD;
+}
+
+.post-link
+{
+	text-decoration: none;
+}
+
+.post-link:hover
+{
+	text-decoration: none;
+}
+
+.post-detail-link
+{
+	text-decoration: none;
+	color: black;
+}
+
+.post-detail-link:hover
+{
+	text-decoration: none;
+	color: black;
+}

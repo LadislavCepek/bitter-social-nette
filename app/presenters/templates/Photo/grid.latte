@@ -1,0 +1,15 @@
+{block content}
+<div class="container">
+	<div class="row">
+	{foreach $this->getParameter('photos') as $photo}
+		<div class="col-lg-4">
+			<div class="card">
+			 	<a n:href=":detail $photo->id">
+					<img class="card-img-top" src="{$photo->urls->small}"/>
+				</a>
+			</div>
+		</div>
+	{/foreach}
+	</div>
+</div>
+{/block}
