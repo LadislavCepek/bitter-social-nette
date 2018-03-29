@@ -13,6 +13,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	/** @var App\Components\HeaderFactory @inject */
 	public $headerFactory;
 
+	/** @var App\Forms\SearchFormFactory @inject */
+	public $searchFormFactory;
+
 	protected function isOwner($compare)
 	{
 		if(!$this->user->isLoggedIn())
@@ -23,6 +26,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 	protected function createComponentHeader()
 	{
-		return $this->headerFactory->create($this->user);
+		return $this->headerFactory->create($this->user, $this->searchFormFactory);
 	}
 }

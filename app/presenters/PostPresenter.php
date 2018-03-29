@@ -6,16 +6,17 @@ use Nette\Application\UI\Multiplier;
 use Nette\Utils\Html;
 
 use App;
-use App\Model\UserManager;
+use App\Model\CommentManager;
 use App\Model\PostManager;
 use App\Forms\PostFormFactory;
 use App\Forms\CommentFormFactory;
 use App\Components\PostControl;
+use App\Components\CommentControl;
 
 class PostPresenter extends BasePresenter
 {
-	/** @var UserManager */
-	private $userManager;
+	/** @var CommentManager */
+	private $commentManager;
 
 	/** @var PostManager */
 	private $postManager;
@@ -33,10 +34,10 @@ class PostPresenter extends BasePresenter
 
 	private $post;
 
-	public function __construct(UserManager $userManager, PostManager $postManager,
+	public function __construct(CommentManager $commentManager, PostManager $postManager,
 															PostFormFactory $postFormFactory, CommentFormFactory $commentFormFactory)
 	{
-		$this->userManager = $userManager;
+		$this->commentManager = $commentManager;
 		$this->postManager = $postManager;
 		$this->postFormFactory = $postFormFactory;
 		$this->commentFormFactory = $commentFormFactory;
@@ -52,6 +53,8 @@ class PostPresenter extends BasePresenter
 		$this->template->post = $this->post;
 		$this->template->html = $html;
 		$this->template->isOwner = $this->isOwner($this->post->user->id);
+
+		$this->template->comments = $this->commentManager->getFromPost($postId);
 	}
 
 	public function renderEdit($postId)
@@ -86,6 +89,15 @@ class PostPresenter extends BasePresenter
 	public function handleLike()
 	{
 
+	}
+
+	protected function createComponentComment()
+	{
+		return new Multiplier(function($commentId)
+		{
+			$comment = $this->commentManager->get($commentId);
+			return new CommentControl($comment, $this->commentManager);
+		});
 	}
 
 	protected function createComponentPostForm()

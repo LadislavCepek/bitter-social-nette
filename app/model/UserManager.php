@@ -5,7 +5,10 @@ namespace App\Model;
 use Nette;
 use Nette\Security\Passwords;
 use Nette\Database\Context;
-use Nette\Database\Table\ActiveRow;
+use Nette\Database\Table;
+use Nette\Utils\FileSystem;
+use Tracy\Debugger;
+use App\Service\SearchService;
 
 /**
  * Users management.
@@ -25,19 +28,25 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
 		COLUMN_GENDER = 'gender',
 		COLUMN_ROLE = 'role',
 		COLUMN_HAS_PICTURE = 'hasPicture',
-		HASH_COST = 12;
+		HASH_COST = 12,
+		PROFILES_DIRECTORY = 'profiles/';
 
 	/** @var MetaManager */
 	private $metaManager;
 
-	public function __construct(Context $database, MetaManager $metaManager)
+	/** @var SearchService */
+	private $searchService;
+
+	public function __construct(Context $database, MetaManager $metaManager, SearchService $searchService)
 	{
 		parent::__construct($database);
 		$this->metaManager = $metaManager;
+		$this->searchService = $searchService;
 	}
 
 	/**
 	 * Performs an authentication.
+	 * @param array
 	 * @return Nette\Security\Identity
 	 * @throws Nette\Security\AuthenticationException
 	 */
@@ -79,12 +88,17 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
 	 * @return void
 	 * @throws DuplicateNameException
 	 */
-	public function add($firstname, $lastname, $username, $email, $password, $gender)
+	public function add(string $firstname, string $lastname, string $username, string $email, string $password, string $gender)
 	{
 		try 
 		{
-			$this->database->table(self::TABLE_NAME)->insert(
+			$table = $this->database->table(self::TABLE_NAME);
+
+			$id = $this->generateUniqueID($table);		
+
+			$table->insert(
 			[
+				self::COLUMN_ID => $id,
 				self::COLUMN_FIRSTNAME => $firstname,
 				self::COLUMN_LASTNAME => $lastname,
 				self::COLUMN_USERNAME => $username,
@@ -92,6 +106,10 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
 				self::COLUMN_EMAIL => $email,
 				self::COLUMN_GENDER => $gender,
 			]);
+
+			$this->searchService->indexUser($id, $firstname, $lastname, $username);
+
+			$this->createUserDirectory($id);
 		} 
 		catch (Nette\Database\UniqueConstraintViolationException $e)
 		{
@@ -104,7 +122,7 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
  	* @param string
  	* @return stdClass
 	*/
-	public function get($username)
+	public function get(string $username)
 	{
 		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_USERNAME, $username)->fetch();
 
@@ -112,10 +130,23 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
 	}
 
 	/** 
- 	* @param ActiveRow
+	* Get user ID
+ 	* @param string
+ 	* @return string
+	*/
+	public function getID(string $username)
+	{
+		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_USERNAME, $username)->select('id')->fetch();
+
+		return $row->id;
+	}
+
+	/** 
+	* Convert user data to object
+ 	* @param Table\ActiveRow
  	* @return stdClass
 	*/
-	public function toObject(ActiveRow $row)
+	public function toObject(Table\ActiveRow $row)
 	{
 		$user = $row->toArray();
 		unset($user[self::COLUMN_PASSWORD_HASH]);
@@ -128,19 +159,39 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
 		else
 		{
 			$user[self::COLUMN_HAS_PICTURE] = true;
-			$user['picture'] = $user[self::COLUMN_USERNAME] . '/profile.png';
+			$user['picture'] = $user[self::COLUMN_ID] . '/profile.png';
 		}
 
 		$meta = array();
 		$meta['posts'] = $this->metaManager->postCount($row->id);
+		$meta['followers'] = $this->metaManager->followersCount($row->id);
+		$meta['following'] = $this->metaManager->followingCount($row->id);
 
 		$user['meta'] = (object) $meta;
 
 		return (object) $user;
 	}
+
+	/**
+	* Creates directory for user files
+	* @param string
+	* @return void
+	* @throws Nette\IOException
+	*/
+	public function createUserDirectory(string $userPath)
+	{
+		$directory = self::PROFILES_DIRECTORY . $userPath;
+		\Tracy\Debugger::barDump($directory, 'directory');
+		try
+		{
+			FileSystem::createDir($directory);
+		}
+		catch(Nette\IOException $ex)
+		{
+			Debugger::log($ex);
+		}
+	}
 }
-
-
 
 class DuplicateNameException extends \Exception
 {

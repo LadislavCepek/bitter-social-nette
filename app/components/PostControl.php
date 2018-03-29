@@ -8,7 +8,8 @@ use App\Model\PostManager;
 
 class PostControl extends Control
 {
-	/** App\Model\PostManager */
+	/** 
+	* @var PostManager */
 	private $postManager;
 
 	private $post;
@@ -31,13 +32,23 @@ class PostControl extends Control
 
 	public function handleLike()
 	{
-		if(!$this->liked)
+		if(!$this->post->meta->liked)
 		{
-			$this->postManager->like($this->post->id);
+			$result = $this->postManager->like($this->post->id);
+			if($result)
+			{
+				$this->post->meta->liked = true;
+				$this->post->meta->likes++;
+			}
 		}
 		else
 		{
-			$this->postManager->dislike($this->post->id);
+			$result = $this->postManager->dislike($this->post->id);
+			if($result)
+			{
+				$this->post->meta->liked = false;
+				$this->post->meta->likes--;
+			}
 		}
 
 		if($this->presenter->isAjax())

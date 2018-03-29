@@ -10,14 +10,14 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-10 col-md-9">
-						<form class="form-inline">
-							<input class="form-control w-75" type="text" placeholder="Search">
-							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+						<form n:name=searchForm class="form-inline">
+							<input n:name=search class="form-control w-75" type="text" placeholder="Search">
+							<button n:name=submit class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 						</form>
 					</div>
 					<div class="col-lg-2 col-md-3">
 						<ul class="navbar-nav float-lg-right">
-							<li class="nav-item"><a class="nav-link" href="{plink Homepage:}">Home</a></li>
+							<li class="nav-item"><a class="nav-link" href="{plink Homepage:}">Feed</a></li>
 							{var $user = $this->getParameter('user')}
 							{if $user->isLoggedIn()}
 								<li class="nav-item"><a class="nav-link" href="{plink User:profile $user->getIdentity()->username}">{$user->getIdentity()->firstname}</a></li>

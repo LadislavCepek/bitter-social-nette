@@ -21,7 +21,7 @@
 						<div class="row m-3">
 
 							<div class="col-md-4 col-sm-4 text-center">
-								<img class="btn-md" src="{$basePath}\images\profiles\{$profile->picture}" style="border-radius:50%; width:220px"/>
+								<img class="btn-md" src="{$basePath}\profiles\{$profile->picture}" style="border-radius:50%; width:220px"/>
 							</div>
 
 							<div class="col-md-8 col-sm-8">
@@ -29,8 +29,6 @@
 								<h2 class="card-title profile-name">{$profile->firstname} {$profile->lastname}</h2>
 
 								<p class="card-text"><strong>@{$profile->username}</strong></p>
-
-								<p class="card-text"><strong>{$profile->email}</strong></p>
 
 								{if !$isOwner}
 								<a n:href="follow!" class="ajax">Follow</a></br>
@@ -51,12 +49,12 @@
 							</div>
 
 							<div class="col-md-4 col-sm-4 text-center">
-								<h2><strong>1.4k</strong></h2>
+								<h2><strong>{$profile->meta->followers}</strong></h2>
 								<span><small>Followers</small></span>
 							</div>
 
 							<div class="col-md-4 col-sm-4 text-center">
-								<h2><strong>321</strong></h2>
+								<h2><strong>{$profile->meta->following}</strong></h2>
 								<span><small>Following</small></span>
 							</div>
 

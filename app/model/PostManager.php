@@ -117,6 +117,30 @@ class PostManager extends BaseManager
 		return (object) $post;
 	}
 
+	public function like($postId)
+	{
+		$result = $this->database->table(self::TABLE_LIKES)->insert(
+		[
+			self::COLUMN_POST_ID => $postId,
+			self::COLUMN_USER_ID => $this->user->id,
+		]);
+
+		if($result)
+			return true;
+		else
+			return false;
+	}
+
+	public function dislike($postId)
+	{
+		$result = $this->getLikeSelection($postId, $this->user->id)->delete();
+
+		if($result)
+			return true;
+		else
+			return false;
+	}
+
 	public function isLikedByUser($postId)
 	{
 		$result = $this->getLikeSelection($postId, $this->user->id)->fetch();
@@ -125,20 +149,6 @@ class PostManager extends BaseManager
 			return true;
 		else
 			return false;
-	}
-
-	public function like($postId)
-	{
-		$this->database->table(self::TABLE_LIKES)->insert(
-		[
-			self::COLUMN_POST_ID => $postId,
-			self::COLUMN_USER_ID => $this->user->id,
-		]);
-	}
-
-	public function dislike($postId)
-	{
-		$this->getLikeSelection($postId, $this->user->id)->delete();
 	}
 
 	/** Calculates how many likes post have */

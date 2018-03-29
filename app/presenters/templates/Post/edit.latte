@@ -12,14 +12,30 @@
 
   <div class="row">
     <div class="col-12">
+
       <div id="editor">
       </div>
+
     </div>
   </div>
 
   <div class="row">
     <div class="col-12">
-      {control postForm}
+
+      <form n:name=postForm>
+
+        <div class="form-group">
+          <textarea class="form-control" n:name=title placeholder="Title"></textarea>
+        </div>
+
+        <div class="form-group">
+          <textarea class="form-control" n:name=headline placeholder="Headline"></textarea>
+        </div>
+
+        <button type="submit" n:name=submit class="btn btn-primary">Submit</button>
+
+      </form>
+
     </div>
   </div>
 

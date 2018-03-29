@@ -22,6 +22,11 @@ class PostFormFactory
 		$this->postManager = $postManager;
 	}
 
+	/** 
+	* Create form
+	* @param callable
+	* @return Form 
+	**/
 	public function create($postId, $title, $headline, $body, callable $onSuccess)
 	{
 		$form = $this->factory->create();
@@ -56,6 +61,8 @@ class PostFormFactory
 
 			$onSuccess($row->id);
 		};
+
+		$form->addProtection('Request time out');
 
 		return $form;
 	}

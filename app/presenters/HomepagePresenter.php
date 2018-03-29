@@ -3,20 +3,18 @@
 namespace App\Presenters;
 
 use Nette;
-use App\Forms;
-use App\Model;
+use App\Model\UserManager;
 
 class HomepagePresenter extends BasePresenter
 {
-	public function __construct()
+	private $userManager;
+
+	public function __construct(UserManager $userManager)
 	{
-		
+		$this->userManager = $userManager;
 	}
 
 	public function renderDefault()
 	{
-		if($this->user->isLoggedIn())
-		{
-		}
 	}
 }

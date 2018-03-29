@@ -25,9 +25,11 @@ class SignInFormFactory
 	}
 
 
-	/**
-	 * @return Form
-	 */
+	/** 
+	* Create form
+	* @param callable
+	* @return Form 
+	**/
 	public function create(callable $onSuccess)
 	{
 		$form = $this->factory->create();
@@ -55,6 +57,8 @@ class SignInFormFactory
 			}
 			$onSuccess();
 		};
+
+		$form->addProtection('Request time out');
 
 		return $form;
 	}

@@ -3,7 +3,11 @@
 # https://nette.org/security-warning
 #
 parameters:
-
+	mongo: 
+		host: '127.0.0.1'
+		dbname: 'bitter-local-dev'
+		user: 'user'
+		password: 'pass' 
 
 application:
 	errorPresenter: Error
@@ -28,11 +32,13 @@ services:
 	- App\Model\CommentManager
 	- App\Model\PostManager
 	- App\Model\MetaManager
+	- App\Model\FollowerManager
 	- App\Forms\FormFactory
 	- App\Forms\SignInFormFactory
 	- App\Forms\SignUpFormFactory
 	- App\Forms\CommentFormFactory
 	- App\Forms\PostFormFactory
+	- App\Forms\SearchFormFactory
 	- App\Components\HeaderFactory
-	- App\Components\PostFactory
+	- App\Service\SearchService
 	router: App\RouterFactory::createRouter

@@ -7,7 +7,7 @@
 	<div class="row mb-2">
 
 		<div class="col-10">
-			<span><strong><a class="comment-link" href="{plink User:profile $post->user->username}">{$comment->user->firstname} {$comment->user->lastname} <span class="text-muted">@{$comment->user->username}</span></a></strong></span>
+			<span><strong><a class="comment-link" href="{plink User:profile $comment->user->username}">{$comment->user->firstname} {$comment->user->lastname} <span class="text-muted">@{$comment->user->username}</span></a></strong></span>
 			<span class="mb-2 text-muted">{$comment->created|date:'%e %b %Y'}</span>
 		</div>
 
@@ -21,7 +21,7 @@
 
 	<div class="row">
 		<div class="col-12">
-			<h5><strong>{$comment->text}</strong></h5>
+			<p>{$comment->text}</p>
 		</div>
 	</div>
 

@@ -9,8 +9,52 @@ class ComposerStaticInit3ceabcb4cc7e66578a17928258061c84
     public static $files = array (
         '7745382c92b7799bf1294b1f43023ba2' => __DIR__ . '/..' . '/tracy/tracy/src/shortcuts.php',
         'a12da592622097d2b593a430e32e13fd' => __DIR__ . '/..' . '/nette/utils/src/loader.php',
+        'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         'e7a6fd2e7a869bb207158e9416bdd9b0' => __DIR__ . '/..' . '/nette/application/src/compatibility.php',
         'a1d067aa2e53d6b47171c03cfc0ea5be' => __DIR__ . '/..' . '/nette/safe-stream/src/loader.php',
+    );
+
+    public static $prefixLengthsPsr4 = array (
+        'R' => 
+        array (
+            'React\\Promise\\' => 14,
+        ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+        ),
+        'G' => 
+        array (
+            'GuzzleHttp\\Stream\\' => 18,
+            'GuzzleHttp\\Ring\\' => 16,
+        ),
+        'E' => 
+        array (
+            'Elasticsearch\\' => 14,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'React\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/promise/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'GuzzleHttp\\Stream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/streams/src',
+        ),
+        'GuzzleHttp\\Ring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/ringphp/src',
+        ),
+        'Elasticsearch\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/Elasticsearch',
+        ),
     );
 
     public static $classMap = array (
@@ -376,6 +420,8 @@ class ComposerStaticInit3ceabcb4cc7e66578a17928258061c84
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3ceabcb4cc7e66578a17928258061c84::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3ceabcb4cc7e66578a17928258061c84::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit3ceabcb4cc7e66578a17928258061c84::$classMap;
 
         }, null, ClassLoader::class);

@@ -23,22 +23,26 @@ class CommentFormFactory
 	}
 
 	/** 
-	* @return form 
+	* Create form
+	* @param callable
+	* @return Form 
 	**/
 	public function create($postId, callable $onSuccess)
 	{
 		$form = $this->factory->create();
 
 		$form->addTextArea('comment', '')
-			->setRequired('Please enter text');
+			->setRequired('Please write a comment');
 
-		$form->addSubmit('send', 'Add comment');
+		$form->addSubmit('submit', 'Add comment');
 
 		$form->onSuccess[] = function(Form $form, $values) use ($postId, $onSuccess)
 		{
 			$this->commentManager->create($postId, $values->comment);
 			$onSuccess();
 		};
+
+		$form->addProtection('Request time out');
 
 		return $form;
 	}

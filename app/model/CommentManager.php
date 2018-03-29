@@ -35,16 +35,36 @@ class CommentManager extends BaseManager
 		$this->database->table(self::TABLE_NAME)->insert(
 		[
 			self::COLUMN_USER => $this->user->id,
-			self::COLUMN_PHOTO => $postId,
+			self::COLUMN_POST => $postId,
 			self::COLUMN_TEXT => $text,
 		]);
 	}
 
 	public function get($postId)
 	{
-		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_POST_ID, $postId)->fetch();
+		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_POST, $postId)->fetch();
 
 		return $this->toObject($row);
+	}
+
+	public function getFromPost($postId)
+	{
+		$rows = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_POST, $postId)->fetchAll();
+
+		$comments = array();
+
+		foreach ($rows as $row) 
+		{
+			$comment = $this->toObject($row);
+			array_push($comments, $comment);
+		}
+
+		return $comments;
+	}
+
+	public function delete($commentId)
+	{
+		$this->database->table(self::TABLE_NAME)->get($commentId)->delete();
 	}
 
 	/** 
@@ -56,7 +76,7 @@ class CommentManager extends BaseManager
 		$user = $this->userManager->toObject($row->user);
 
 		$comment = $row->toArray();
-		unset($comment[self::COLUMN_USER_ID]);
+		unset($comment[self::COLUMN_USER]);
 
 		$comment['user'] = $user;
 
