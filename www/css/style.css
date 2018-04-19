@@ -1,8 +1,24 @@
-.content-wrapper {
+html, body
+{
+	height: 100%;
+}
+
+body
+{
 	font-size: 15px;
 	line-height: 1.6;
 	color: #333;
 	background-color: #f5f5f5;
+}
+
+.content-wrapper, header
+{
+	background-color: white;
+}
+
+.content-wrapper
+{
+	padding: 1em;
 }
 
 #ajax-spinner {
@@ -14,10 +30,10 @@
 	display: none;
 }
 
-div.flash {
-	color: black;
+div.flash 
+{
+	color: white;
 	background: #FFF9D7;
-	border: 1px solid #E2C822;
 	padding: 1em;
 	margin: 1em 0;
 }
@@ -43,4 +59,11 @@ form .required label {
 form .error {
 	color: #D00;
 	font-weight: bold;
+}
+
+.card-wrapper, .bottom-line
+{
+	border-bottom: 1px solid #DDD;
+	padding-bottom: 1em;
+	padding-top: 1em;
 }

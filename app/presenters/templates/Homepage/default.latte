@@ -1,7 +1,32 @@
 {block title}Feed{/block}
-{block content}
-<h2>Feed</h2>
 
+{block}<link href="{$basePath}/css/post.css" rel="stylesheet">{/block}
+
+{block content}
+
+
+<div class="container content-wrapper bottom-line">
+	<div class="row">
+				
+		<div class="col-12">
+			<h2 class="text-center">Feed</h2>
+		</div>
+					
+	</div>
+</div>
+
+<div class="container content-wrapper">
+	<div class="row">
+
+		<div class="col-1"></div>
+
+		<div class="col-10">
+			{foreach $posts as $post}
+				{control post-$post->id}
+			{/foreach}
+		</div>
+
+	</div>
+</div>
 
 {/block}
-

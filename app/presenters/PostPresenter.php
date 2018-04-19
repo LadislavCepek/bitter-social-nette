@@ -28,9 +28,9 @@ class PostPresenter extends BasePresenter
 	private $commentFormFactory;
 
   private $postId = null;
-	private $title = '';
-	private $headline = '';
-	private $body = '';
+	private $content = '';
+	private $image = '';
+	private $article = '';
 
 	private $post;
 
@@ -47,11 +47,7 @@ class PostPresenter extends BasePresenter
 	{
 		$this->post = $this->postManager->get($postId);
 
-		$html = Html::el('div');
-		$html->setHtml($this->post->body);
-
 		$this->template->post = $this->post;
-		$this->template->html = $html;
 		$this->template->isOwner = $this->isOwner($this->post->user->id);
 
 		$this->template->comments = $this->commentManager->getFromPost($postId);
@@ -59,12 +55,6 @@ class PostPresenter extends BasePresenter
 
 	public function renderEdit($postId)
 	{
-		if(!$this->user->isLoggedIn())
-		{
-			$this->redirect('Sign:in');
-			return;
-		}
-
 		if($postId)
 		{
 			$post = $this->postManager->get($postId);
@@ -79,16 +69,50 @@ class PostPresenter extends BasePresenter
 			
 			$this->postId = $postId; 
 
-			$this->title = $post->title;
-			$this->headline = $post->headline;
-			$this->body = $post->body;
+			$this->content = $post->content;
+			$this->image = $post->image;
+			$this->article = $post->article;
 		}
 	}
 
-
-	public function handleLike()
+		public function handleLike()
 	{
+		if(!$this->post->meta->isLikedByUser)
+		{
+			$result = $this->likeManager->create($this->post->id);
+			if($result)
+			{
+				$this->post->meta->isLikedByUser = true;
+				$this->post->meta->likes++;
+			}
+		}
+		else
+		{
+			$result = $this->likeManager->delete($this->post->id);
+			if($result)
+			{
+				$this->post->meta->isLikedByUser = false;
+				$this->post->meta->likes--;
+			}
+		}
 
+		if($this->presenter->isAjax())
+		{
+			$this->redrawControl();
+		}
+		else
+		{
+			$this->redirect('this');
+		}
+	}
+
+	public function handleDelete()
+	{
+		$this->postManager->delete($this->post->id);
+
+		$this->flashMessage('Post has been deleted');
+
+		$this->redirect('User:profile');
 	}
 
 	protected function createComponentComment()
@@ -102,8 +126,10 @@ class PostPresenter extends BasePresenter
 
 	protected function createComponentPostForm()
 	{
-		return $this->postFormFactory->create($this->postId, $this->title, $this->headline, $this->body, function($postId)
+		return $this->postFormFactory->create($this->postId, $this->content, $this->image, $this->article, function($postId)
 		{
+			$this->flashMessage('Post has been added');
+
 			$this->redirect('Post:detail', array('postId' => $postId));
 		});
 	}

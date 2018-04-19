@@ -4,19 +4,22 @@ namespace App\Components;
 
 use Nette;
 use Nette\Application\UI\Control;
-use App\Model\PostManager;
+use App\Model;
 
 class PostControl extends Control
 {
-	/** 
-	* @var PostManager */
+	/** @var Model\PostManager */
 	private $postManager;
+
+	/** @var Model\LikeManager */
+	private $likeManager;
 
 	private $post;
 
-	public function __construct($post, PostManager $postManager)
+	public function __construct($post, Model\PostManager $postManager, Model\LikeManager $likeManager)
 	{
 		$this->postManager = $postManager;
+		$this->likeManager = $likeManager;
 		$this->post = $post;
 	}
 
@@ -32,21 +35,21 @@ class PostControl extends Control
 
 	public function handleLike()
 	{
-		if(!$this->post->meta->liked)
+		if(!$this->post->meta->isLikedByUser)
 		{
-			$result = $this->postManager->like($this->post->id);
+			$result = $this->likeManager->create($this->post->id);
 			if($result)
 			{
-				$this->post->meta->liked = true;
+				$this->post->meta->isLikedByUser = true;
 				$this->post->meta->likes++;
 			}
 		}
 		else
 		{
-			$result = $this->postManager->dislike($this->post->id);
+			$result = $this->likeManager->delete($this->post->id);
 			if($result)
 			{
-				$this->post->meta->liked = false;
+				$this->post->meta->isLikedByUser = false;
 				$this->post->meta->likes--;
 			}
 		}
@@ -64,6 +67,8 @@ class PostControl extends Control
 	public function handleDelete()
 	{
 		$this->postManager->delete($this->post->id);
+
+		$this->presenter->flashMessage('Post has been deleted');
 
 		$this->redirect('this');
 	}

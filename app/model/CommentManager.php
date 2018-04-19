@@ -12,44 +12,70 @@ class CommentManager extends BaseManager
 	use Nette\SmartObject;
 
 	const
-		TABLE_NAME = 'comments',
-		COLUMN_USER = 'user_id',
-		COLUMN_POST = 'post_id',
+		COLUMN_ID = 'id',
+		COLUMN_USER_ID = 'user_id',
+		COLUMN_POST_ID = 'post_id',
 		COLUMN_TEXT = 'text';
 
-	/** @var User */
+	/** 
+	* @var User */
 	private $user;
 
-	/** @var UserManager */
+	/**
+	* @var UserManager */
 	private $userManager; 
 
+	/**
+	* @param Context
+	* @param User
+	* @param UserManager
+	*/
 	public function __construct(Context $database, User $user, UserManager $userManager)
 	{
-		parent::__construct($database);
+		parent::__construct($database, 'comments');
 		$this->user = $user;
 		$this->userManager = $userManager;
 	}
 
-	public function create($postId, $text)
+	/**
+	* @param string
+	* @param string
+	* @return void
+	*/
+	public function create(string $postId, string $text)
 	{
-		$this->database->table(self::TABLE_NAME)->insert(
+		$table = $this->getTable();
+
+		$id = $this->generateUniqueID($table);
+
+		$this->getTable()->insert(
 		[
-			self::COLUMN_USER => $this->user->id,
-			self::COLUMN_POST => $postId,
+			self::COLUMN_ID => $id,
+			self::COLUMN_USER_ID => $this->user->id,
+			self::COLUMN_POST_ID => $postId,
 			self::COLUMN_TEXT => $text,
 		]);
 	}
 
-	public function get($postId)
+	/**
+	* @param string
+	* @return stdObject
+	*/
+	public function get(string $commentID)
 	{
-		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_POST, $postId)->fetch();
+		$row = $this->getTable()->where(self::COLUMN_ID, $commentID)->fetch();
 
 		return $this->toObject($row);
 	}
 
-	public function getFromPost($postId)
+	/** 
+	* Get all comments from post
+	* @param string
+	* @return array
+	*/
+	public function getFromPost(string $postId)
 	{
-		$rows = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_POST, $postId)->fetchAll();
+		$rows = $this->getTable()->where(self::COLUMN_POST_ID, $postId)->fetchAll();
 
 		$comments = array();
 
@@ -62,21 +88,26 @@ class CommentManager extends BaseManager
 		return $comments;
 	}
 
-	public function delete($commentId)
+	/**
+	* @param string
+	*/
+	public function delete(string $commentId)
 	{
-		$this->database->table(self::TABLE_NAME)->get($commentId)->delete();
+		$this->getTable()->get($commentId)->delete();
 	}
 
 	/** 
- 	* @param ActiveRow
- 	* @return stdClass
+ 	* @param 
+ 	* @return stdClass or false
 	*/
-	public function toObject(ActiveRow $row)
+	public function toObject($row)
 	{
+		parent::toObject($row);
+
 		$user = $this->userManager->toObject($row->user);
 
 		$comment = $row->toArray();
-		unset($comment[self::COLUMN_USER]);
+		unset($comment[self::COLUMN_USER_ID]);
 
 		$comment['user'] = $user;
 

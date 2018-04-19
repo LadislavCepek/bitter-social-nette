@@ -16,14 +16,14 @@ class SignUpFormFactory
 	/** @var FormFactory */
 	private $factory;
 
-	/** @var Model\UserManager */
-	private $userManager;
+	/** @var Model\SignManager */
+	private $signManager;
 
 
-	public function __construct(FormFactory $factory, Model\UserManager $userManager)
+	public function __construct(FormFactory $factory, Model\SignManager $signManager)
 	{
 		$this->factory = $factory;
-		$this->userManager = $userManager;
+		$this->signManager = $signManager;
 	}
 
 
@@ -65,7 +65,7 @@ class SignUpFormFactory
 		{
 			try 
 			{
-				$this->userManager->add($values->firstname, $values->lastname, $values->username,
+				$this->signManager->add($values->firstname, $values->lastname, $values->username,
 																$values->email, $values->password, $values->gender);
 			} 
 			catch (Model\DuplicateNameException $e) 

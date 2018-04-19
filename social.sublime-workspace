@@ -53,7 +53,7 @@
 			],
 			[
 				"t",
-				"td\tTag"
+				"td	Tag"
 			],
 			[
 				"lo",
@@ -269,7 +269,7 @@
 			],
 			[
 				"for",
-				"foreach\tforeach …"
+				"foreach	foreach …"
 			],
 			[
 				"print",
@@ -277,6 +277,9 @@
 			]
 		]
 	},
+	"buffers":
+	[
+	],
 	"build_system": "",
 	"build_system_choices":
 	[
@@ -316,8 +319,21 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Dropbox/Coding/Web/Application/bitter-social-nette-master",
+		"/C/Dropbox/Coding/Web/Application/bitter-social-nette-master/app",
+		"/C/Dropbox/Coding/Web/Application/bitter-social-nette-master/app/config",
+		"/C/Dropbox/Coding/Web/Application/bitter-social-nette-master/temp"
+	],
 	"file_history":
 	[
+		"/C/Dropbox/Coding/Web/Application/bitter-social-nette-master/app/config/config.local.neon",
+		"/C/Dropbox/Coding/Web/Application/bitter-social-nette-master/app/config/config.neon",
+		"/C/Dropbox/Coding/C#/XBP360/XPadEmu/WheelControls.cs",
+		"/C/Dropbox/Coding/C#/XBP360/XPadEmu/Wheel.cs",
+		"/C/Dropbox/Coding/C#/XBP360/XPadEmu/WheelButton.cs",
+		"/C/Dropbox/Coding/C#/XBP360/XPadEmu/Program.cs",
 		"/C/Dropbox/Coding/Web/Application/social-nette/app/presenters/templates/Homepage/default.latte",
 		"/C/Dropbox/Coding/Web/Application/social-nette/app/model/BaseManager.php",
 		"/C/Dropbox/Coding/Web/Application/social-nette/vendor/ruflin/elastica/lib/Elastica/Client.php",
@@ -439,13 +455,7 @@
 		"/C/Dropbox/Coding/Web/express-test/controllers/user.controller.js",
 		"/C/Dropbox/Coding/Web/express-test/routes/unsplash.route.js",
 		"/C/Dropbox/Coding/Web/express-test/routes/api.route.js",
-		"/C/Dropbox/Coding/Web/express-test/routes/users.route.js",
-		"/C/Dropbox/Coding/Web/express-test/routes/users/users.route.js",
-		"/C/Dropbox/Coding/Web/express-test/services/user.service.js",
-		"/C/Dropbox/Coding/Web/express-test/controllers/users.controller.js",
-		"/C/Users/Ladislav Čepek/Desktop/Game Prototyping/matrix.js",
-		"/C/Users/Ladislav Čepek/Desktop/Game Prototyping/matrix.html",
-		"/C/Dropbox/Coding/Web/javascript/Spinner/script.js"
+		"/C/Dropbox/Coding/Web/express-test/routes/users.route.js"
 	],
 	"find":
 	{
@@ -497,6 +507,14 @@
 		"whole_word": false,
 		"wrap": true
 	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
 	"incremental_find":
 	{
 		"height": 23.0
@@ -537,6 +555,7 @@
 		"height": 100.0
 	},
 	"pinned_build_system": "",
+	"project": "social.sublime-project",
 	"replace":
 	{
 		"height": 42.0
@@ -569,6 +588,7 @@
 		],
 		"width": 0.0
 	},
+	"selected_group": 0,
 	"settings":
 	{
 	},

@@ -4,52 +4,71 @@ namespace App\Presenters;
 
 use Nette\Application\UI\Multiplier;
 use App;
-use App\Model\UserManager;
-use App\Model\PostManager;
-use App\Model\FollowerManager;
-use App\Forms\PostFormFactory;
+use App\Model;
+use App\Forms;
 use App\Components\PostControl;
 
 class UserPresenter extends BasePresenter
 {
-	/**
-	* @var UserManager */
+	/** @var Model\UserManager */
 	private $userManager;
 
-	/**
-	* @var PostManager */
+	/** @var Model\PostManager */
 	private $postManager;
 
-	/**
-	* @var FollowerManager */
+	/** @var Model\LikeManager */
+	private $likeManager;
+
+	/** @var Model\FollowerManager */
 	private $followerManager;
 
-	/**
-	* @var PostFormFactory */
-	private $postFormFactory;
+	/** @var Forms\ProfileFormFactory */
+	private $profileFormFactory;
+
+	/** @var Forms\PictureFormFactory */
+	private $pictureFormFactory;
 
 	private $profile;
 
-	public function __construct(UserManager $userManager, PostManager $postManager, FollowerManager $followerManager, PostFormFactory $postFormFactory)
+	public function __construct(Model\UserManager $userManager, Model\PostManager $postManager, Model\LikeManager $likeManager, Model\FollowerManager $followerManager,
+	 Forms\ProfileFormFactory $profileFormFactory, Forms\PictureFormFactory $pictureFormFactory)
 	{
 		$this->userManager = $userManager;
 		$this->postManager = $postManager;
+		$this->likeManager = $likeManager;
 		$this->followerManager = $followerManager;
-		$this->postFormFactory = $postFormFactory;
+		$this->profileFormFactory = $profileFormFactory;
+		$this->pictureFormFactory = $pictureFormFactory;
 	}
 
-	public function renderProfile($username)
+	public function renderProfile(string $username = null)
 	{
-		$this->profile = $this->userManager->get($username);
+		if($username = null)
+			$username = $this->user->getIdentity()->username;
+
+		$this->profile = $this->userManager->getByUsername($username);
 
 		$this->template->profile = $this->profile;
 		$this->template->isOwner = $this->isOwner($this->profile->id);
 
 		$this->template->posts = $this->postManager->getFromUser($this->profile->id);
+	}
 
-		$this->template->followers = $this->followerManager->getUserFollowers($this->profile->id);
-		\Tracy\Debugger::barDump($this->template->followers, 'followers');
-		\Tracy\Debugger::barDump($this->followerManager->getUserFollowing($this->profile->id), 'following');
+	public function renderEdit(string $username)
+	{
+
+		$this->profile = $this->userManager->getByUsername($username);
+
+		$this->template->profile = $this->profile;
+		$this->template->isOwner = $this->isOwner($this->profile->id);
+	}
+
+	public function renderEditPicture(string $username)
+	{
+		$this->profile = $this->userManager->getByUsername($username);
+
+		$this->template->profile = $this->profile;
+		$this->template->isOwner = $this->isOwner($this->profile->id);
 	}
 
 	public function handleFollow()
@@ -61,7 +80,30 @@ class UserPresenter extends BasePresenter
 
 		if($this->isAjax())
 		{
-			$this->redrawControl('ajaxChange');
+			$this->redrawControl('follow');
+			$this->redrawControl('meta');
+		}
+		else
+		{
+			$this->redirect('this');
+		}
+	}
+
+	public function handleUnfollow()
+	{
+		$username = $this->getParameter('username');
+		$id = $this->userManager->getID($username);
+
+		$this->followerManager->delete($id);
+
+		if($this->isAjax())
+		{
+			$this->redrawControl('follow');
+			$this->redrawControl('meta');
+		}
+		else
+		{
+			$this->redirect('this');
 		}
 	}
 
@@ -70,10 +112,46 @@ class UserPresenter extends BasePresenter
 	*/
 	protected function createComponentPost()
 	{
-		return new Multiplier(function($postId)
+		return new Multiplier(function($postID)
 		{
-			$post = $this->postManager->get($postId);
-			return new PostControl($post, $this->postManager);
+			$post = $this->postManager->get($postID);
+			return new PostControl($post, $this->postManager, $this->likeManager);
+		});
+	}
+
+	protected function createComponentProfileForm()
+	{
+		$profile = $this->user->getIdentity();	
+
+		$id = $this->user->id;
+		$firstname  = $profile->firstname;
+		$lastname 	= $profile->lastname;
+		$gender 	  = $profile->gender;
+		$hasPicture = $profile->hasPicture == 0 ? false : true;
+
+		return $this->profileFormFactory->create($id, $firstname, $lastname, $gender, $hasPicture, 
+		function()
+		{
+			$this->flashMessage('Update successful');
+			$this->redirect('this');
+		});
+	}
+
+	protected function createComponentPictureForm()
+	{
+		$id = $this->user->id;
+		$hasPicture = $this->user->getIdentity()->hasPicture == 0 ? false : true;
+
+		return $this->pictureFormFactory->create($id, $hasPicture,
+		function()
+		{
+			$this->flashMessage('Update successful', 'success');
+			$this->redirect('User:profile');
+		}, 
+		function()
+		{
+			$this->flashMessage('Update failed', 'danger');
+			$this->redirect('this');
 		});
 	}
 }

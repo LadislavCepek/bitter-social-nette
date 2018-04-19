@@ -2,45 +2,42 @@
 
 {block content}
 
-<div class="container">
+<div class="container content-wrapper">
 	<h1 n:block=title class="text-center">Sign Up</h1>
 
-	<div class="sign-wrapper">
-		<form n:name=signUpForm class="form-signin">
+	<form n:name=signUpForm class="form-signin">
 
-			<div class="form-label-group">
-		    <input n:name=firstname type="text" id="inputFirstname" class="form-control" placeholder="First name" required autofocus>
-		    <label for="inputFirstname">First name</label>
-		  </div>
+		<div class="form-label-group">
+		  <input n:name=firstname type="text" id="inputFirstname" class="form-control" placeholder="First name" required autofocus>
+		  <label for="inputFirstname">First name</label>
+		</div>
 
-		  <div class="form-label-group">
-		    <input n:name=lastname type="text" id="inputLastname" class="form-control" placeholder="Last name" required>
-		    <label for="inputLastname">Last name</label>
-		  </div>
+		<div class="form-label-group">
+		  <input n:name=lastname type="text" id="inputLastname" class="form-control" placeholder="Last name" required>
+		  <label for="inputLastname">Last name</label>
+		</div>
 
-		  <div class="form-label-group">
-		    <input n:name=username type="text" id="inputUsername" class="form-control" placeholder="Username" required>
-		    <label for="inputUsername">Username</label>
-		  </div>
+		<div class="form-label-group">
+		  <input n:name=username type="text" id="inputUsername" class="form-control" placeholder="Username" required>
+		  <label for="inputUsername">Username</label>
+		</div>
 
-		  <div class="form-label-group">
-		    <input n:name=email type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
-		    <label for="inputEmail">Email address</label>
-		  </div>
+		<div class="form-label-group">
+		  <input n:name=email type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+		  <label for="inputEmail">Email address</label>
+		</div>
 
-		  <div class="form-label-group">
-		    <input n:name=password type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-		    <label for="inputPassword">Password</label>
-		  </div>
+		<div class="form-label-group">
+		  <input n:name=password type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+		  <label for="inputPassword">Password</label>
+		</div>
 
-		  <div class="form-label-group">
-		  	<select  n:name=gender class="form-control">
-		  	</select>
-		  </div>
+		<div class="form-label-group">
+		 	<select  n:name=gender class="form-control"></select>
+		</div>
 
-		  <button n:name=send class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
-		</form>
-	</div>
+		<button n:name=send class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+	</form>
 
 	<p class="text-center"><a n:href="in">Already have an account? Log in.</a></p>
 </div>

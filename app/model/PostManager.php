@@ -6,20 +6,20 @@ use Nette;
 use Nette\Database\Context;
 use Nette\Database\Table\ActiveRow;
 use Nette\Security\User;
+use Nette\Utils;
 
 class PostManager extends BaseManager
 {
 	use Nette\SmartObject;
 
 	const 
-		TABLE_POSTS = 'posts',
 		COLUMN_ID = 'id',
-		COLUMN_TITLE = 'title',
-		COLUMN_HEADLINE = 'headline',
-		COLUMN_BODY = 'body',
+		COLUMN_CONTENT = 'content',
+		COLUMN_IMAGE = 'image',
+		COLUMN_ARTICLE = 'article',
 		COLUMN_USER_ID = 'user_id',
-		TABLE_LIKES = 'likes',
-		COLUMN_POST_ID = 'post_id';
+		COLUMN_POST_ID = 'post_id',
+		COLUMN_VISIBLE = 'visible';
 
 	/** @var User */
 	private $user;
@@ -27,43 +27,91 @@ class PostManager extends BaseManager
 	/** @var UserManager */
 	private $userManager;
 
-	public function __construct(Context $database, User $user, UserManager $userManager)
+	/** @var MetaManager */
+	private $metaManager;
+
+	/**
+	* @param Context
+	* @param User
+	* @param UserManager
+	* @param MetaManager
+	*/
+	public function __construct(Context $database, User $user, UserManager $userManager, MetaManager $metaManager)
 	{
-		parent::__construct($database);
+		parent::__construct($database, 'posts');
 		$this->user = $user;
 		$this->userManager = $userManager;
+		$this->metaManager = $metaManager;
 	}
 
-	public function create($post)
+	/**
+	* @param Utils\ArrayHash
+	* @return ActiveRow
+	*/
+	public function create(Utils\ArrayHash $post)
 	{
-		return $this->database->table(self::TABLE_POSTS)->insert(
+		$table = $this->getTable();
+
+		$id = $this->generateUniqueID($table);
+
+		return $this->getTable()->insert(
 		[
-			self::COLUMN_TITLE => $post->title,
-			self::COLUMN_HEADLINE => $post->headline,
-			self::COLUMN_BODY => $post->body,
+			self::COLUMN_ID => $id,
+			self::COLUMN_CONTENT => $post->content,
+			self::COLUMN_IMAGE => $post->image,
+			self::COLUMN_ARTICLE => $post->article,
 			self::COLUMN_USER_ID => $this->user->id,
+			self::COLUMN_VISIBLE => $post->hidden ? 0 : 1,
 		]);
 	}
 
-	public function edit($post)
+	/**
+	* @param Utils\ArrayHash
+	* @return stdObject
+	*/
+	public function edit(Utils\ArrayHash $post)
 	{
-		$row = $this->database->table(self::TABLE_POSTS)->get($post->id);
+		$row = $this->getTable()->get($post->id);
 
-		unset($post[self::COLUMN_ID]);
-
-		$row->update($post);
+		$row->update(
+		[
+			self::COLUMN_CONTENT => $post->content,
+			self::COLUMN_IMAGE => $post->image,
+			self::COLUMN_ARTICLE => $post->article,
+			self::COLUMN_VISIBLE => $post->hidden ? 0 : 1,
+		]);
 
 		return $this->toObject($row);
 	}
 
-	public function delete($postId)
+	/**
+	* @param string
+	* @return void
+	*/
+	public function delete(string $postID)
 	{
-		$this->database->table(self::TABLE_POSTS)->get($postId)->delete();
+		$this->getTable()->get($postID)->delete();
 	}
 
-	public function exists($postId)
+	/**
+	* @param string
+	* @param bool
+	* @return void
+	*/
+	public function setVisible(string $postID, bool $isVisible)
 	{
-		$result = $this->database->table(self::TABLE_POSTS)->where(self::COLUMN_ID, $postId);
+		$value = $isVisible ? 1 : 0;
+		$this->getTable()->where(self::COLUMN_ID, $postID)->update([self::COLUMN_VISIBLE => $value]);
+	}
+
+	/** 
+	* Does post exist
+	*	@param string 
+	* @return boolean
+	*/
+	public function exists(string $postID)
+	{
+		$result = $this->getTable()->where(self::COLUMN_ID, $postID);
 
 		if($result)
 			return true;
@@ -71,17 +119,25 @@ class PostManager extends BaseManager
 			return false;
 	}
 
-	public function get($postId)
+	/** 
+	*	@param string 
+	* @return stdObject
+	*/
+	public function get(string $postID)
 	{
-		$post = $this->database->table(self::TABLE_POSTS)->where(self::COLUMN_ID, $postId)->fetch();
+		$post = $this->getTable()->where(self::COLUMN_ID, $postID)->fetch();
 
 		return $this->toObject($post);
 	}
 
-	public function getFromUser($userId)
+	/** 
+	* Get all posts from user
+	*	@param string 
+	* @return array
+	*/
+	public function getFromUser(string $userID)
 	{
-		$selection = $this->database->table(self::TABLE_POSTS);
-		$rows = $selection->where(self::COLUMN_USER_ID, $userId)->fetchAll();
+		$rows = $this->getTable()->where(self::COLUMN_USER_ID, $userID)->fetchAll();
 
 		$posts = array();
 
@@ -94,73 +150,45 @@ class PostManager extends BaseManager
 		return $posts;
 	}
 
-	public function postCount($userId)
+	/**
+	* Get posts for users feed
+	* @param string
+	* @return array
+	*/
+	public function getFeed(string $userID)
 	{
-		return $this->database->table(self::TABLE_POSTS)->where(self::COLUMN_USER_ID, $userId)->count();
+		$query = 'SELECT p.*, f.following_id, f.follower_id FROM posts p INNER JOIN followers f ON (f.following_id = p.user_id) WHERE f.follower_id = ? ORDER BY p.created DESC';
+		return $this->database->query($query, $userID)->fetchAll();
 	}
 
-	public function toObject(ActiveRow $row)
+	/** 
+	*	@param 
+	* @return stdObject or false
+	*/
+	public function toObject($row)
 	{
+		parent::toObject($row);
+
 		$user = $this->userManager->toObject($row->user);
 
 		$post = $row->toArray();
 		unset($post[self::COLUMN_USER_ID]);
 
+		$article = Utils\Html::el('');
+		$article->setHtml($post[self::COLUMN_ARTICLE]);
+
+		$content = Utils\Html::el('');
+		$content->setHtml($post[self::COLUMN_CONTENT]);
+
+		$post[self::COLUMN_ARTICLE] = $article;
+		$post[self::COLUMN_CONTENT] = $content;
+
 		$post['user'] = $user;
 
-		$meta = array();
-		$meta['liked'] = $this->isLikedByUser($row->id);
-		$meta['likes'] = $this->likes($row->id);
+		$meta = $this->metaManager->getPostMeta($post['id'], $this->user->id);
 
-		$post['meta'] = (object) $meta;
+		$post['meta'] = $meta;
 
 		return (object) $post;
-	}
-
-	public function like($postId)
-	{
-		$result = $this->database->table(self::TABLE_LIKES)->insert(
-		[
-			self::COLUMN_POST_ID => $postId,
-			self::COLUMN_USER_ID => $this->user->id,
-		]);
-
-		if($result)
-			return true;
-		else
-			return false;
-	}
-
-	public function dislike($postId)
-	{
-		$result = $this->getLikeSelection($postId, $this->user->id)->delete();
-
-		if($result)
-			return true;
-		else
-			return false;
-	}
-
-	public function isLikedByUser($postId)
-	{
-		$result = $this->getLikeSelection($postId, $this->user->id)->fetch();
-
-		if($result)
-			return true;
-		else
-			return false;
-	}
-
-	/** Calculates how many likes post have */
-	public function likes($postId)
-	{
-		$selection = $this->database->table(self::TABLE_LIKES);
-		return $selection->where(self::COLUMN_POST_ID, $postId)->count();
-	}
-
-	private function getLikeSelection($postId)
-	{
-		$selection = $this->database->table(self::TABLE_LIKES);
-		return $selection->where(self::COLUMN_POST_ID . ' = ? && '. self::COLUMN_USER_ID . ' = ?', $postId, $this->user->id);
 	}
 }

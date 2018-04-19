@@ -3,22 +3,18 @@
 namespace App\Model;
 
 use Nette;
-use Nette\Security\Passwords;
-use Nette\Database\Context;
-use Nette\Database\Table;
-use Nette\Utils\FileSystem;
-use Tracy\Debugger;
+use Nette\Security\User;
+use Nette\Database;
 use App\Service\SearchService;
 
 /**
  * Users management.
  */
-class UserManager extends BaseManager implements Nette\Security\IAuthenticator
+class UserManager extends BaseManager
 {
 	use Nette\SmartObject;
 
 	const
-		TABLE_NAME = 'users',
 		COLUMN_ID = 'id',
 		COLUMN_FIRSTNAME = 'firstname',
 		COLUMN_LASTNAME = 'lastname',
@@ -27,9 +23,7 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
 		COLUMN_EMAIL = 'email',
 		COLUMN_GENDER = 'gender',
 		COLUMN_ROLE = 'role',
-		COLUMN_HAS_PICTURE = 'hasPicture',
-		HASH_COST = 12,
-		PROFILES_DIRECTORY = 'profiles/';
+		COLUMN_HAS_PICTURE = 'hasPicture';
 
 	/** @var MetaManager */
 	private $metaManager;
@@ -37,84 +31,14 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
 	/** @var SearchService */
 	private $searchService;
 
-	public function __construct(Context $database, MetaManager $metaManager, SearchService $searchService)
+	private $user;
+
+	public function __construct(Database\Context $database, MetaManager $metaManager, User $user, SearchService $searchService)
 	{
-		parent::__construct($database);
+		parent::__construct($database, 'users');
 		$this->metaManager = $metaManager;
+		$this->user = $user;
 		$this->searchService = $searchService;
-	}
-
-	/**
-	 * Performs an authentication.
-	 * @param array
-	 * @return Nette\Security\Identity
-	 * @throws Nette\Security\AuthenticationException
-	 */
-	public function authenticate(array $credentials)
-	{
-		list($email, $password) = $credentials;
-
-		$row = $this->database->table(self::TABLE_NAME)
-			->where(self::COLUMN_EMAIL, $email)->fetch();
-
-		if (!$row) 
-		{
-			throw new Nette\Security\AuthenticationException('The email is incorrect.', self::IDENTITY_NOT_FOUND);
-		} 
-		elseif (!Passwords::verify($password, $row[self::COLUMN_PASSWORD_HASH])) 
-		{
-			throw new Nette\Security\AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
-		} 
-		elseif (Passwords::needsRehash($row[self::COLUMN_PASSWORD_HASH])) 
-		{
-			$row->update(
-			[
-				self::COLUMN_PASSWORD_HASH => Passwords::hash($password, ['cost' => self::HASH_COST]),
-			]);
-		}
-
-		$arr = $row->toArray();
-		unset($arr[self::COLUMN_PASSWORD_HASH]);
-
-		return new Nette\Security\Identity($row[self::COLUMN_ID], $row[self::COLUMN_ROLE], $arr);
-	}
-
-	/**
-	 * Adds new user.
-	 * @param  string
-	 * @param  string
-	 * @param  string
-	 * @param  string
-	 * @return void
-	 * @throws DuplicateNameException
-	 */
-	public function add(string $firstname, string $lastname, string $username, string $email, string $password, string $gender)
-	{
-		try 
-		{
-			$table = $this->database->table(self::TABLE_NAME);
-
-			$id = $this->generateUniqueID($table);		
-
-			$table->insert(
-			[
-				self::COLUMN_ID => $id,
-				self::COLUMN_FIRSTNAME => $firstname,
-				self::COLUMN_LASTNAME => $lastname,
-				self::COLUMN_USERNAME => $username,
-				self::COLUMN_PASSWORD_HASH => Passwords::hash($password, ['cost' => self::HASH_COST]),
-				self::COLUMN_EMAIL => $email,
-				self::COLUMN_GENDER => $gender,
-			]);
-
-			$this->searchService->indexUser($id, $firstname, $lastname, $username);
-
-			$this->createUserDirectory($id);
-		} 
-		catch (Nette\Database\UniqueConstraintViolationException $e)
-		{
-			throw new DuplicateNameException;
-		}
 	}
 
 	/** 
@@ -122,11 +46,23 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
  	* @param string
  	* @return stdClass
 	*/
-	public function get(string $username)
+	public function getByID(string $id)
 	{
-		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_USERNAME, $username)->fetch();
+		$row = $this->getTable()->where(self::COLUMN_ID, $id)->fetch();
 
-		return $this->toObject($row);
+		return $this->toObject($row, true);
+	}
+
+	/** 
+	* Get user data
+ 	* @param string
+ 	* @return stdClass
+	*/
+	public function getByUsername(string $username)
+	{
+		$row = $this->getTable()->where(self::COLUMN_USERNAME, $username)->fetch();
+
+		return $this->toObject($row, true);
 	}
 
 	/** 
@@ -136,63 +72,83 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
 	*/
 	public function getID(string $username)
 	{
-		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_USERNAME, $username)->select('id')->fetch();
+		$row = $this->getTable()->where(self::COLUMN_USERNAME, $username)->select('id')->fetch();
 
 		return $row->id;
 	}
 
 	/** 
+	* Update user picture
+ 	* @param string
+ 	* @param string
+ 	* @return void
+	*/
+	public function updatePicture(string $id, string $hasPicture)
+	{
+		$default = $this->searchService->getUser($id);
+
+		try
+		{
+			$this->searchService->updateUserPicture($id, $hasPicture);
+		}
+		catch(Exception $ex)
+		{
+			Debugger::log($ex);
+			return;
+		}	
+
+		try
+		{
+			$this->getTable()->where(self::COLUMN_ID, $id)->update(
+			[
+				self::COLUMN_HAS_PICTURE => $hasPicture ? 1 : 0
+			]);
+		}
+		catch(Nette\Database\DriverException $ex)
+		{
+			Debugger::log($ex);
+
+			/* Revert search update */
+			try
+			{
+				$this->searchService->updateUserPicture($id, $default->hasPicture);
+			}
+			catch(Exception $ex)
+			{
+				Debugger::log($ex);
+			}
+		}
+	}
+
+	/** 
 	* Convert user data to object
  	* @param Table\ActiveRow
+ 	* @param bool Include meta data
  	* @return stdClass
 	*/
-	public function toObject(Table\ActiveRow $row)
+	public function toObject($row, bool $getMeta = false)
 	{
+		parent::toObject($row);
+
 		$user = $row->toArray();
 		unset($user[self::COLUMN_PASSWORD_HASH]);
 
 		if($user[self::COLUMN_HAS_PICTURE] == 0)
 		{
 			$user[self::COLUMN_HAS_PICTURE] = false;
-			$user['picture'] = $user[self::COLUMN_GENDER] == 'ma' ? 'default/male.png' : 'default/female.png';
+			$user['picture'] = sprintf('default/%s.png', $user[self::COLUMN_GENDER]);
 		}
 		else
 		{
 			$user[self::COLUMN_HAS_PICTURE] = true;
-			$user['picture'] = $user[self::COLUMN_ID] . '/profile.png';
+			$user['picture'] = sprintf('%s/profile.png', $user[self::COLUMN_ID]);
 		}
 
-		$meta = array();
-		$meta['posts'] = $this->metaManager->postCount($row->id);
-		$meta['followers'] = $this->metaManager->followersCount($row->id);
-		$meta['following'] = $this->metaManager->followingCount($row->id);
-
-		$user['meta'] = (object) $meta;
+		if($getMeta)
+		{
+			$user['meta'] = $this->metaManager->getUserMeta($user['id'], $this->user->id);
+		}
 
 		return (object) $user;
 	}
-
-	/**
-	* Creates directory for user files
-	* @param string
-	* @return void
-	* @throws Nette\IOException
-	*/
-	public function createUserDirectory(string $userPath)
-	{
-		$directory = self::PROFILES_DIRECTORY . $userPath;
-		\Tracy\Debugger::barDump($directory, 'directory');
-		try
-		{
-			FileSystem::createDir($directory);
-		}
-		catch(Nette\IOException $ex)
-		{
-			Debugger::log($ex);
-		}
-	}
-}
-
-class DuplicateNameException extends \Exception
-{
 }

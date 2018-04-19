@@ -2,33 +2,32 @@
 
 {block content}
 
-<div class="container">
-<h1 n:block=title class="text-center">Sign In</h1>
+<div class="container content-wrapper">
 
-<div class="sign-wrapper">
-	<form n:name=signInForm class="form-signin">
+	<h1 n:block=title class="text-center">Sign In</h1>
 
-	  <div class="form-label-group">
-	    <input n:name=email type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-	    <label for="inputEmail">Email address</label>
-	  </div>
+		<form n:name=signInForm class="form-signin">
 
-	  <div class="form-label-group">
-	    <input n:name=password type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-	    <label for="inputPassword">Password</label>
-	  </div>
+		  <div class="form-label-group">
+		    <input n:name=email type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+		    <label for="inputEmail">Email address</label>
+		  </div>
 
-	  <div class="checkbox mb-3">
-	    <label>
-	      <input n:name=remember type="checkbox"> Remember me
-	    </label>
-	  </div>
+		  <div class="form-label-group">
+		    <input n:name=password type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+		    <label for="inputPassword">Password</label>
+		  </div>
 
-	  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-	</form>
-</div>
+		  <div class="checkbox mb-3">
+		    <label>
+		      <input n:name=remember type="checkbox"> Remember me
+		    </label>
+		  </div>
 
-<p class="text-center"><a n:href="up">Don't have an account yet? Sign up.</a></p>
+		  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+		</form>
+
+	<p class="text-center"><a n:href="up">Don't have an account yet? Sign up.</a></p>
 </div>
 
 {/block}

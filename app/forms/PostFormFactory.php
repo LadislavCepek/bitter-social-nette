@@ -27,7 +27,7 @@ class PostFormFactory
 	* @param callable
 	* @return Form 
 	**/
-	public function create($postId, $title, $headline, $body, callable $onSuccess)
+	public function create($postId, $content, $image, $article, callable $onSuccess)
 	{
 		$form = $this->factory->create();
 
@@ -36,28 +36,29 @@ class PostFormFactory
 		$form->addHidden('id', '')
 			->setValue($postId);
 
-		$form->addTextArea('title', 'Title:')
+		$form->addTextArea('content', '')
 			->setRequired($requiredMessage)
-			->setValue($title);
+			->setValue($content)
+			->addRule(Form::MAX_LENGTH, 'Post is too long', 255);
 
-		$form->addTextArea('headline', 'Headline:')
-			->setRequired($requiredMessage)
-			->setValue($headline);
+		$form->addText('image', '')->setValue($image)
+			->setRequired(false)
+			->addRule(Form::MAX_LENGTH, 'Image link too long', 120);
 
-		$form->addHidden('body', '')
-			->setHtmlAttribute('id', 'editor-body')
-			->setRequired($requiredMessage)
-			->setValue($body);
+		$form->addCheckbox('hidden', 'Make private?');
+
+		$form->addHidden('article', '')->setValue($article)
+			->setHtmlAttribute('id', 'article-editor-value');			
 
 		$form->addSubmit('submit', 'Post')
 			->setHtmlAttribute('id', 'editor-button');
 
-		$form->onSuccess[] = function(Form $form, $post) use ($onSuccess)
+		$form->onSuccess[] = function(Form $form, $values) use ($onSuccess)
 		{
-			if($post->id == null)
-				$row = $this->postManager->create($post);
+			if($values->id == null)
+				$row = $this->postManager->create($values);
 			else
-				$row = $this->postManager->edit($post);
+				$row = $this->postManager->edit($values);
 
 			$onSuccess($row->id);
 		};

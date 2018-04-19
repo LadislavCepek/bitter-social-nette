@@ -12,9 +12,8 @@ class FollowerManager extends BaseManager
 	use Nette\SmartObject;
 
 	const
-		TABLE_NAME = 'followers',
 		COLUMN_ID = 'id',
-		COLUMN_USER_ID = 'user_id',
+		COLUMN_FOLLOWING_ID = 'following_id',
 		COLUMN_FOLLOWER_ID = 'follower_id';
 
 	/**
@@ -27,7 +26,7 @@ class FollowerManager extends BaseManager
 
 	public function __construct(Context $database, User $user, UserManager $userManager)
 	{
-		parent::__construct($database);
+		parent::__construct($database, 'followers');
 		$this->user = $user;
 		$this->userManager = $userManager;
 	}
@@ -39,16 +38,26 @@ class FollowerManager extends BaseManager
 	*/
 	public function create(string $followingID)
 	{
-		$table = $this->database->table(self::TABLE_NAME);
-
+		$table = $this->getTable();
 		$id = $this->generateUniqueId($table);
 
-		$table->insert(
+		$this->getTable()->insert(
 		[
 			self::COLUMN_ID => $id,
-			self::COLUMN_USER_ID => $followingID,
+			self::COLUMN_FOLLOWING_ID => $followingID,
 			self::COLUMN_FOLLOWER_ID => $this->user->id,
 		]);
+	}
+
+	/** 
+	* Delete follower row
+	* @param string
+	* @return void
+	*/
+	public function delete(string $followingID)
+	{
+		$selection = $this->getTable()->where(self::COLUMN_FOLLOWING_ID, $followingID)->where(self::COLUMN_FOLLOWER_ID, $this->user->id);
+		$selection->delete();
 	}
 
 	/** 
@@ -56,9 +65,9 @@ class FollowerManager extends BaseManager
   * @param string
   * @return array
   */
-	public function getUserFollowers(string $userID)
+	public function getUserFollowers(string $followingID)
 	{
-		$rows = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_USER_ID, $userID)->select('follower_id')->fetchAll();
+		$rows = $this->getTable()->where(self::COLUMN_FOLLOWING_ID, $followingID)->select(self::COLUMN_FOLLOWER_ID)->fetchAll();
 
 		$users = array();
 
@@ -76,36 +85,26 @@ class FollowerManager extends BaseManager
   * @param string
   * @return array
   */
-	public function getUserFollowing(string $userID)
+	public function getUserFollowing(string $followerID)
 	{
-		$rows = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_FOLLOWER_ID, $userID)->select('user_id')->fetchAll();
+		$rows = $this->getTable()->where(self::COLUMN_FOLLOWER_ID, $followerID)->select(self::COLUMN_FOLLOWING_ID)->fetchAll();
 
 		$users = array();
 
 		foreach ($rows as $row)
 		{
-			$user = $this->toObject($row->user);
+			$user = $this->toObject($row->following);
 			array_push($users, $user);
 		}
 
 		return $users;
 	}
 
-	public function isUserFollowing()
-	{
-
-	}
-
-	public function delete($ID)
-	{
-		
-	}
-
 	/** 
- 	* @param ActiveRow
- 	* @return stdClass
+ 	* @param 
+ 	* @return stdClass or false
 	*/
-	public function toObject(ActiveRow $row)
+	public function toObject($row)
 	{
 		return $this->userManager->toObject($row);
 	}

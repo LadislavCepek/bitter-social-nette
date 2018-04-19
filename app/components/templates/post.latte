@@ -2,14 +2,17 @@
 
 {var $post = $this->getParameter('post')}
 {var $isOwner = $this->getParameter('isOwner')}
+{var $isVisible = $post->visible || (!$post->visible && $isOwner)}
 
-<div class="post-wrapper p-2">
+<div class="post-wrapper card-wrapper">
 	<div class="row mb-2">
 
 		<div class="col-10">
 			<span><strong><a class="post-link" href="{plink User:profile $post->user->username}">{$post->user->firstname} {$post->user->lastname} <span class="text-muted">@{$post->user->username}</span></a></strong></span>
 			<span class="mb-2 text-muted">{$post->created|date:'%e %b %Y'}</span>
 		</div>
+
+	{if $isVisible}	
 
 		{if $isOwner}
 		<div class="col-2">
@@ -19,33 +22,48 @@
 		{/if}
 	</div>
 
-	<a class="post-detail-link" href="{plink Post:detail $post->id}">
+	<div class="row">
+		<div class="col-12">
+			<div class="row">
+				<div class="col-12">
 
-		<div class="row">
-			<div class="col-12">
-				<h5><strong>{$post->title}</strong></h5>
+					<p>{$post->content}</p>
+
+				</div>
 			</div>
-		</div>
 
-		<div class="row">
-			<div class="col-12">
-				<p>{$post->headline|truncate:360}</p>
+			<div class="row">
+				<div class="col-12">
+
+					<image class="post-image" src="{$post->image}"/>
+					
+				</div>
 			</div>
+			
+			<a class="post-link" href="{plink Post:detail $post->id}"> Read more...</a>
 		</div>
+	</div>
 
-	</a>
 
 	<div class="row">
 		<div class="col-12">
 
 			<a n:href="like!" class="ajax post-link">
-				<span class="fa {if $post->meta->liked} fa-heart {else} fa-heart-o {/if} fa-lg mx-2"></span>
+				<span class="fa {if $post->meta->isLikedByUser} fa-heart {else} fa-heart-o {/if} fa-lg mx-2"></span>
 			</a>
 
 			<span><strong>{$post->meta->likes}</strong></span>
 			
 		</div>
 	</div>
+	{else}
+	<div class="col-12">
+
+		<h5 class="text-center"><span class="fa fa-lock fa-lg mx-2"></span><strong>Private content</strong></h5>
+	</div>
+	{/if}
 </div>
+
+
 
 {/snippet}

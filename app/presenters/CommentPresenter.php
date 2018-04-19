@@ -15,6 +15,7 @@ use App\Components\CommentControl;
 
 class CommentPresenter extends BasePresenter
 {
+
 	public function renderEdit($commentId)
 	{
 

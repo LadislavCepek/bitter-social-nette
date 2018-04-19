@@ -16,6 +16,14 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	/** @var App\Forms\SearchFormFactory @inject */
 	public $searchFormFactory;
 
+	public function startup()
+	{
+		parent::startup();
+
+		if(!$this->user->isLoggedIn() && $this->getName() != 'Sign')
+			$this->redirect('Sign:in');
+	}
+
 	protected function isOwner($compare)
 	{
 		if(!$this->user->isLoggedIn())

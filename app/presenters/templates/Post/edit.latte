@@ -1,44 +1,97 @@
 {block head}
 
 <link href="{$basePath}/js/trumbowyg/ui/trumbowyg.min.css" rel="stylesheet">
+<link href="{$basePath}/css/post.css" rel="stylesheet">
 
 {/block}
 
 {block title}Post Edit{/block}
 
+{var $user = $this->getParameter('user')}
+
 {block content}
 
-<div class="container">
+<div class="container content-wrapper">
 
   <div class="row">
     <div class="col-12">
 
-      <div id="editor">
-      </div>
-
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-
+      <h4>Post editor</h4>
       <form n:name=postForm>
 
         <div class="form-group">
-          <textarea class="form-control" n:name=title placeholder="Title"></textarea>
+          <textarea id="post-editor" class="form-control" n:name=content placeholder="Compose..." rows="10"></textarea>
         </div>
 
         <div class="form-group">
-          <textarea class="form-control" n:name=headline placeholder="Headline"></textarea>
+          <input type="text" id="image-link" class="form-control" n:name=image placeholder="Image link">
         </div>
 
-        <button type="submit" n:name=submit class="btn btn-primary">Submit</button>
+        <div class="checkbox mb-3">
+          <label>
+            <input n:name=hidden type="checkbox"> Make private?
+          </label>
+        </div>
+
+        <button type="submit" n:name=submit class="btn btn-primary">Save</button>
 
       </form>
 
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-1"></div>
+
+    <div class="col-10">
+
+      <div class="card-wrapper">
+        <h4>Preview</h4>
+        <div class="row mb-2">
+
+          <div class="col-10">
+            <span><strong><a class="post-link" href="">{$user->getIdentity()->firstname} {$user->getIdentity()->lastname} <span class="text-muted">@{$user->getIdentity()->username}</span></a></strong></span>
+            <span class="mb-2 text-muted"></span>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12">
+
+                <p id="post-preview"></p>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+
+                <image id="post-editor-image" class="post-image"/>
+                
+              </div>
+            </div>
+            
+            <a href=""> Read more...</a>
+
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+
+      <h4>Article editor</h4>
+      <div id="article-editor" style="height:480px"></div>
+
+    </div>
+  </div>
 </div>
 
 {/block}

@@ -2,23 +2,22 @@
 
 {block content}
 
-<div class="container">
+<div class="container content-wrapper">
 	<div class="row">
 
 		<div class="col-12">
 
 			{foreach $users as $userData}
-				<div class="row mb-2">
+				<div class="row pb-2 pt-2 card-wrapper">
 
 					<div class="col-2">
-						<image src="{$basePath}/profiles/{$userData->id}/profile.png" style="max-width:100%;border-radius:50%;"/>
+						<image src="{$basePath}/profiles/{$userData->picture}" style="max-width:100%;border-radius:50%;"/>
 					</div>
 
 					<div class="col-8">
 						<h5 class="align-middle" >
 							<strong>
 								<a class="comment-link " href="{plink User:profile $userData->username}">
-
 									{$userData->fullname}
 									<span class="text-muted">
 										@{$userData->username}

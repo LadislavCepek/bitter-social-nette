@@ -3,11 +3,6 @@
 # https://nette.org/security-warning
 #
 parameters:
-	mongo: 
-		host: '127.0.0.1'
-		dbname: 'bitter-local-dev'
-		user: 'user'
-		password: 'pass' 
 
 application:
 	errorPresenter: Error
@@ -20,7 +15,7 @@ session:
 
 
 database:
-	dsn: 'mysql:host=127.0.0.1;dbname=bitter'
+	dsn: 'mysql:host=127.0.0.1;dbname=mytable'
 	user: 'root'
 	password:
 	options:
@@ -28,17 +23,24 @@ database:
 
 
 services:
+	- App\Model\SignManager
 	- App\Model\UserManager
 	- App\Model\CommentManager
 	- App\Model\PostManager
+	- App\Model\LikeManager
 	- App\Model\MetaManager
 	- App\Model\FollowerManager
+	
 	- App\Forms\FormFactory
 	- App\Forms\SignInFormFactory
 	- App\Forms\SignUpFormFactory
 	- App\Forms\CommentFormFactory
 	- App\Forms\PostFormFactory
 	- App\Forms\SearchFormFactory
+	- App\Forms\ProfileFormFactory
+	- App\Forms\PictureFormFactory
+
 	- App\Components\HeaderFactory
+
 	- App\Service\SearchService
 	router: App\RouterFactory::createRouter

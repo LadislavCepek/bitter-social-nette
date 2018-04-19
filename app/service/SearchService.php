@@ -10,10 +10,12 @@ class SearchService
 	use Nette\SmartObject;
 
 	const
-		ID            = 'id',
-		USER_INDEX    = 'users',
-		USER_FULLNAME = 'fullname',
-		USER_USERNAME = 'username';
+		ID            	 = 'id',
+		USER_INDEX    	 = 'users',
+		USER_FULLNAME 	 = 'fullname',
+		USER_USERNAME 	 = 'username',
+		USER_GENDER 		 = 'gender',
+		USER_HAS_PICTURE = 'hasPicture';
 		
 	/** @var ClientBuilder */
 	protected $client;
@@ -26,7 +28,7 @@ class SearchService
 	/**
 	* Searches for user
 	* @param string
-	* @return object
+	* @return array
 	*/
 	public function search($search)
 	{
@@ -55,18 +57,38 @@ class SearchService
 				]
 			]
 		];
-
+		
 		$hits = $this->client->search($params)['hits']['hits'];
 
 		$results = array();
 
 		foreach ($hits as $hit) 
 		{
+			$id = $hit['_id'];
+			$fullname = $hit['_source'][self::USER_FULLNAME];
+			$username = $hit['_source'][self::USER_USERNAME];
+
+			$hasPicture = $hit['_source'][self::USER_HAS_PICTURE];
+
+			$picture = "";
+			
+			if($hasPicture == true)
+			{
+				$picture = sprintf('%s/profile.png', $id);
+			}
+			else
+			{
+				$gender = $hit['_source'][self::USER_GENDER];
+
+				$picture = sprintf('default/%s.png', $gender);
+			}
+
 			$result =
 			[
-				self::ID => $hit['_id'],
-				self::USER_FULLNAME => $hit['_source'][self::USER_FULLNAME],
-				self::USER_USERNAME => $hit['_source'][self::USER_USERNAME]
+				self::ID => $id,
+				self::USER_FULLNAME => $fullname,
+				self::USER_USERNAME => $username,
+				'picture' => $picture
 			];
 
 			array_push($results, (object) $result);
@@ -81,9 +103,10 @@ class SearchService
 	* @param string
 	* @param string
 	* @param string
-	* @return object
+	* @param string
+	* @return array
 	*/
-	public function indexUser($id, $firstname, $lastname, $username)
+	public function indexUser(string $id, string $firstname, string $lastname, string $username, string $gender)
 	{
 		$array = [$firstname, $lastname];
 		$fullname = join(' ', $array);
@@ -92,17 +115,104 @@ class SearchService
 		[
 			'index'  => self::USER_INDEX,
 			'type'   => 'data',
-			self::ID => $id,
+			'id' => $id,
 			'body'   => 
 			[
 				self::USER_FULLNAME => $fullname,
-				self::USER_USERNAME => $username
+				self::USER_USERNAME => $username,
+				self::USER_GENDER => $gender,
+				self::USER_HAS_PICTURE => false
 			]
 		];
 
 		return $this->client->index($params);
 	}
 
+	/**
+	*	Update user in search engine
+	* @param string
+	* @param string
+	* @param string
+	* @param string
+	* @param string
+	* @return array
+	*/
+	public function updateUser(string $id, string $firstname, string $lastname, string $gender)
+	{
+		$array = [$firstname, $lastname];
+		$fullname = join(' ', $array);
 
+		$params = 
+		[
+			'index'  => self::USER_INDEX,
+			'type'   => 'data',
+			'id' => $id,
+			'body'   => 
+			[
+				'doc' =>
+				[
+					self::USER_FULLNAME => $fullname,
+					self::USER_GENDER => $gender,
+				]
+			]
 
+		];
+
+		return $this->client->update($params);
+	}
+
+	/**
+	*	Update user picture in search engine
+	* @param string
+	* @param string
+	* @return array
+	*/
+	public function updateUserPicture(string $id, string $hasPicture)
+	{
+		\Tracy\Debugger::barDump($hasPicture, 'hase');
+		$params = 
+		[
+			'index'  => self::USER_INDEX,
+			'type'   => 'data',
+			'id' => $id,
+			'body'   => 
+			[
+				'doc' =>
+				[
+					self::USER_HAS_PICTURE => $hasPicture == 0 ? false : true, 
+				]
+			]
+
+		];
+
+		return $this->client->update($params);
+	}
+
+	/**
+	* @param string 
+	* @return object
+	*/
+	public function getUser(string $id)
+	{
+		$params =
+		[
+			'index' => self::USER_INDEX,
+			'type' => 'data',
+			'id' => $id
+		];
+
+		$user = $this->client->get($params);
+		$source = $user['_source'];
+
+		$result =
+		[
+			self::ID => $user['_id'],
+			self::USER_FULLNAME => $source[self::USER_FULLNAME],
+			self::USER_USERNAME => $source[self::USER_USERNAME],
+			self::USER_GENDER => $source[self::USER_GENDER],
+			'hasPicture' => $source[self::USER_HAS_PICTURE]
+		];
+
+		return (object) $result;
+	}
 }	

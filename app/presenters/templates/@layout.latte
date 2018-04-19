@@ -30,9 +30,9 @@
 <body>
 	{control header}
 
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+	<div n:foreach="$flashes as $flash" n:class="flash, 'bg-' . $flash->type">{$flash->message}</div>
 
-	<div class="content-wrapper">
+	<div class="main-wrapper">
 	{include content}
 	</div>
 

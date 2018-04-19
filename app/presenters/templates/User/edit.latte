@@ -1,0 +1,33 @@
+{block head}<link href="{$basePath}/css/sign-form.css" rel="stylesheet">{/block}
+
+{block content}
+
+<div class="container content-wrapper">
+	<h1 n:block=title class="text-center">Edit Profile</h1>
+
+	<form n:name=profileForm class="form-signin">
+
+		<div class="form-label-group">
+		  <input n:name=firstname type="text" id="inputFirstname" class="form-control" placeholder="First name" required autofocus>
+		  <label for="inputFirstname">First name</label>
+		</div>
+
+		<div class="form-label-group">
+		  <input n:name=lastname type="text" id="inputLastname" class="form-control" placeholder="Last name" required>
+		  <label for="inputLastname">Last name</label>
+		</div>
+
+		<div class="form-label-group">
+		 	<select  n:name=gender class="form-control"></select>
+		</div>
+
+		<div class="form-label-group">
+		 	<input n:name=file type="file" accept="image/*" class="form-control">
+		</div>
+
+		<button n:name=send class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+		<a n:href="User:profile $user->getIdentity()->username" class="btn btn-lg btn-primary btn-block">Cancel</a>
+	</form>
+</div>
+
+{/block}
